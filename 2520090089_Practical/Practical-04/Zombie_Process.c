@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/types.h>
 #include <stdlib.h>
-#include <sys/wait.h>
 
 int main()
 {
@@ -9,22 +9,28 @@ int main()
 
     pid = fork();
 
+    if (pid < 0)
+    {
+        printf("Fork Failed\n");
+        return 1;
+    }
+
     if (pid == 0)
     {
         printf("Child Process\n");
         printf("PID : %d\n", getpid());
-
+        printf("Child exiting...\n");
         exit(0);
     }
     else
     {
         printf("Parent Process\n");
         printf("PID : %d\n", getpid());
+        printf("Sleeping for 20 seconds...\n");
 
-        wait(NULL);
+        sleep(20);
 
-        printf("Child collected successfully.\n");
-        printf("No Zombie Process.\n");
+        printf("Parent exiting.\n");
     }
 
     return 0;
